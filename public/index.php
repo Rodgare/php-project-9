@@ -1,10 +1,10 @@
 <?php
 
-require __DIR__ . '/../vendor/autoload.php';
-
 use Slim\Factory\AppFactory;
 use Slim\Middleware\MethodOverrideMiddleware;
 use DI\Container;
+
+require __DIR__ . '/../vendor/autoload.php';
 
 session_start();
 
@@ -22,8 +22,7 @@ $app->add(MethodOverrideMiddleware::class);
 $router = $app->getRouteCollector()->getRouteParser();
 
 $app->get('/', function ($req, $res) {
-    $res->getBody()->write("Hello, World! This is a test of the PHP server.");
-    return $res;
+    return $this->get('renderer')->render($res, 'index.html');
 })->setName('root');
 
 $app->run();
