@@ -4,7 +4,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Hexlet\\Code\\": ["public/", "src/"]
+            "Hexlet\\Code\\": ["public/", "app/,", "src/"]
         }
     },
     "authors": [
@@ -27,6 +27,7 @@
         "illuminate/collections": "^12.8",
         "illuminate/support": "^12.8",
         "symfony/var-dumper": "^7.2",
-        "slim/flash": "^0.4.0"
+        "slim/flash": "^0.4.0",
+        "nesbot/carbon": "^3.9"
     }
 }
