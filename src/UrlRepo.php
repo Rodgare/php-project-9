@@ -78,16 +78,18 @@ class UrlRepo
         $url->setId($id);
     }
 
-    public function isNameExists(string $name): mixed
+    public function isNameExists(Url $url): bool
     {
         $sql = "SELECT * FROM urls WHERE name = :name";
         $stmt = $this->conn->prepare($sql);
+        $name = $url->getName();
         $stmt->bindParam(':name', $name);
         $stmt->execute();
         $urls = $stmt->fetch();
 
         if($urls) {
-            return $urls['id'];
+            $url->setId($urls['id']);
+            return true;
         }
         
         return false;

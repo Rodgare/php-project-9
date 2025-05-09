@@ -63,14 +63,15 @@ $app->post('/urls', function ($req, $res) use ($router) {
     if (count($errors) === 0) {
         $normalize = new UrlNormalize();
         $urlData['name'] = $normalize->normalize($urlData['name']);
-        $idIfNameExists = $urlRepo->isNameExists($urlData['name']);
-
-        if ($idIfNameExists) {
-            $this->get('flash')->addMessage('success', 'Страница уже существует');
-            return $res->withRedirect($router->urlFor('urls.show', ['id' => $idIfNameExists]));
-        }
-
         $url = Url::fromArray([$urlData['name']]);
+        
+        if ($urlRepo->isNameExists($url)) {
+            $id = $url->getId();
+            $this->get('flash')->addMessage('success', 'Страница уже существует');
+            
+            return $res->withRedirect($router->urlFor('urls.show', ['id' => $id]));
+        }
+        
         $urlRepo->save($url);
         $id = $url->getId();
         $this->get('flash')->addMessage('success', 'Страница успешно добавлена');
