@@ -78,12 +78,12 @@ $app->post(
     function ($req, $res) use ($router) {
         $urlRepo = $this->get(UrlRepo::class);
         $urlData = $req->getParsedBodyParam('url');
-        $normalize = new UrlNormalize();
-        $urlData['name'] = $normalize->normalize($urlData['name']);
         $validator = new UrlValidator();
         $errors = $validator->validate($urlData);
 
         if (count($errors) === 0) {
+            $normalize = new UrlNormalize();
+            $urlData['name'] = $normalize->normalize($urlData['name']);
             $url = Url::fromArray([$urlData['name']]);
 
             if ($urlRepo->isNameExists($url)) {
