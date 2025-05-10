@@ -37,7 +37,6 @@ $container->set(
         $dbname = $_ENV['DB_DATABASE'] ?? $_ENV['DATABASE_NAME'] ?? 'project9';
         $user = $_ENV['DB_USERNAME'] ?? $_ENV['DATABASE_USERNAME'] ?? $_ENV['DB_USER'] ?? 'axel';
         $password = $_ENV['DB_PASSWORD'] ?? $_ENV['DATABASE_PASSWORD'] ?? $_ENV['DB_PASS'] ?? '1234';
-        
         $conStr = sprintf(
             "pgsql:host=%s;port=%d;dbname=%s;user=%s;password=%s",
             $host,
