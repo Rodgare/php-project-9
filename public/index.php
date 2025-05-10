@@ -32,18 +32,19 @@ $container->set(
 $container->set(
     \PDO::class,
     function () {
-        $iniFilePath = implode('/', [dirname(__DIR__), 'database.ini']);
-        $params = parse_ini_file($iniFilePath);
-        if ($params === false) {
-            throw new \Exception("Error reading database configuration file");
-        }
+        $host = $_ENV['DB_HOST'] ?? $_ENV['DATABASE_HOST'] ?? 'localhost';
+        $port = $_ENV['DB_PORT'] ?? $_ENV['DATABASE_PORT'] ?? '5432';
+        $dbname = $_ENV['DB_DATABASE'] ?? $_ENV['DATABASE_NAME'] ?? 'project9';
+        $user = $_ENV['DB_USERNAME'] ?? $_ENV['DATABASE_USERNAME'] ?? $_ENV['DB_USER'] ?? 'axel';
+        $password = $_ENV['DB_PASSWORD'] ?? $_ENV['DATABASE_PASSWORD'] ?? $_ENV['DB_PASS'] ?? '1234';
+        
         $conStr = sprintf(
             "pgsql:host=%s;port=%d;dbname=%s;user=%s;password=%s",
-            $params['host'],
-            $params['port'],
-            $params['database'],
-            $params['user'],
-            $params['password']
+            $host,
+            $port,
+            $dbname,
+            $user,
+            $password
         );
 
         $conn = new \PDO($conStr);
@@ -97,8 +98,8 @@ $app->post(
         }
 
         $params = [
-        'urlData' => $urlData,
-        'errors' => $errors
+            'urlData' => $urlData,
+            'errors' => $errors
         ];
 
         return $this->get('renderer')->render($res->withStatus(422), 'index.phtml', $params);
