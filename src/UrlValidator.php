@@ -17,7 +17,7 @@ class UrlValidator
             $errors[] = 'URL не должен быть пустым';
         }
 
-        if (!filter_var($urlName, FILTER_VALIDATE_URL) || strlen($urlName) > 255) {
+        if (!filter_var($urlName, FILTER_VALIDATE_URL)) {
             $errors[] = 'Некорректный URL';
         }
 
