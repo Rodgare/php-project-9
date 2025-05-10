@@ -32,11 +32,16 @@ $container->set(
 $container->set(
     \PDO::class,
     function () {
-        $host = $_ENV['DB_HOST'] ?? $_ENV['DATABASE_HOST'] ?? 'localhost';
-        $port = $_ENV['DB_PORT'] ?? $_ENV['DATABASE_PORT'] ?? '5432';
-        $dbname = $_ENV['DB_DATABASE'] ?? $_ENV['DATABASE_NAME'] ?? 'project9';
-        $user = $_ENV['DB_USERNAME'] ?? $_ENV['DATABASE_USERNAME'] ?? $_ENV['DB_USER'] ?? 'axel';
-        $password = $_ENV['DB_PASSWORD'] ?? $_ENV['DATABASE_PASSWORD'] ?? $_ENV['DB_PASS'] ?? '1234';
+        $databaseUrl = parse_url($_ENV['DATABASE_URL']);
+        $host = $databaseUrl['host'] ?? $_ENV['DB_HOST'] ??
+        $_ENV['DATABASE_HOST'] ?? 'localhost';
+        $port = $databaseUrl['port'] ?? $_ENV['DB_PORT'] ?? $_ENV['DATABASE_PORT'] ?? '5432';
+        $dbname = ltrim($databaseUrl['path'], '/') ?? $_ENV['DB_DATABASE'] ??
+        $_ENV['DATABASE_NAME'] ?? 'project9';
+        $user = $databaseUrl['user'] ?? $_ENV['DB_USERNAME'] ??
+        $_ENV['DATABASE_USERNAME'] ?? $_ENV['DB_USER'] ?? 'axel';
+        $password = $databaseUrl['pass'] ?? $_ENV['DB_PASSWORD'] ??
+        $_ENV['DATABASE_PASSWORD'] ?? $_ENV['DB_PASS'] ?? '1234';
         $conStr = sprintf(
             "pgsql:host=%s;port=%d;dbname=%s;user=%s;password=%s",
             $host,
@@ -45,7 +50,6 @@ $container->set(
             $user,
             $password
         );
-
         $conn = new \PDO($conStr);
         $conn->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
         return $conn;
