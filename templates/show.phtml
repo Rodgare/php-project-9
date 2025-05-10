@@ -29,9 +29,14 @@
       </div>
     </nav>
   </header>
-  <?php if (!empty($flash)): ?>
+  <?php if (!empty($flash['success'])): ?>
     <div class="alert alert-success" role="alert">
       <?= $flash['success'][0] ?>
+    </div>
+  <?php endif; ?>
+  <?php if (!empty($flash['error'])): ?>
+    <div class="alert alert-danger" role="alert">
+      <?= $flash['error'][0] ?>
     </div>
   <?php endif; ?>
   <main class="flex-grow-1">
@@ -75,7 +80,7 @@
             <?php foreach ($checks as $check): ?>
               <tr>
                 <td><?= $check->getId() ?></td>
-                <td></td>
+                <td><?= $check->getStatusCode() ?? ''?></td>
                 <td></td>
                 <td></td>
                 <td></td>

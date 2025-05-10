@@ -2,6 +2,9 @@
 
 namespace Hexlet\Code;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+
 class Check
 {
     private ?int $id = null;
@@ -17,8 +20,25 @@ class Check
         [$url_id] = $checkData;
         $check = new Check();
         $check->setUrl_id($url_id);
-        
+
         return $check;
+    }
+
+    public function check(Url $url): ?array
+    {
+        $client = new Client();
+        $urlName = $url->getName();
+        
+        try {
+            $response = $client->request('GET', $urlName);
+        } catch (GuzzleException $e) {
+
+            return null;
+        }
+
+        $statusCode = $response->getStatusCode();
+
+        return ['statusCode' => $statusCode];
     }
 
     public function getId(): ?int
@@ -31,6 +51,11 @@ class Check
         return $this->url_id;
     }
 
+    public function getStatusCode(): ?string
+    {
+        return $this->status_code;
+    }
+
     public function getCreated_at(): ?string
     {
         return $this->created_at;
@@ -41,13 +66,18 @@ class Check
         $this->id = $id;
     }
 
+    public function setStatusCode($status_code): void
+    {
+        $this->status_code = $status_code;
+    }
+
     public function setCreated_at(string $created_at): void
     {
         $this->created_at = $created_at;
     }
 
     public function setUrl_id(string $url_id): void
-    {  
+    {
         $this->url_id = $url_id;
     }
 

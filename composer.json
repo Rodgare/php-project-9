@@ -28,6 +28,7 @@
         "illuminate/support": "^12.8",
         "symfony/var-dumper": "^7.2",
         "slim/flash": "^0.4.0",
-        "nesbot/carbon": "^3.9"
+        "nesbot/carbon": "^3.9",
+        "guzzlehttp/guzzle": "^7.0"
     }
 }

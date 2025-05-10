@@ -16,13 +16,35 @@ class UrlRepo
     public function getEntities(): array
     {
         $urls = [];
-        $sql = "SELECT * FROM urls";
+        $sql = "SELECT
+                    u.id AS url_id,
+                    u.name AS url_name,
+                    u.created_at AS url_created_at,
+                    c.status_code AS status_code,
+                    c.created_at AS check_created_at
+                FROM
+                    urls u
+                LEFT JOIN LATERAL (
+                    SELECT *
+                    FROM url_checks
+                    WHERE url_id = u.id
+                    ORDER BY created_at DESC
+                    LIMIT 1
+                ) c ON true
+                ORDER BY
+                    u.id;
+                ";
         $stmt = $this->conn->query($sql);
-
         while ($row = $stmt->fetch()) {
-            $url = Url::fromArray([$row['name']]);
-            $url->setCreated_at($row['created_at']);
-            $url->setId($row['id']);
+            $url = Url::fromArray([$row['url_name']]);
+            $url->setCreated_at($row['url_created_at']);
+            if ($row['check_created_at']) {
+                $url->setLastCheckDate($row['check_created_at']);
+            }
+            if ($row['status_code']) {
+                $url->setLastCheckCode($row['status_code']);
+            }
+            $url->setId($row['url_id']);
             $urls[] = $url;
         }
 

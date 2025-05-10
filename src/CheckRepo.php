@@ -39,6 +39,7 @@ class checkRepo
             $check = Check::fromArray([$row['url_id']]);
             $check->setId($row['id']);
             $check->setCreated_at($row['created_at']);
+            $check->setStatusCode($row['status_code']) ?? '';
             $checks[] = $check;
         }
 
@@ -50,11 +51,11 @@ class checkRepo
         $date = Carbon::now();
         $dateFormated = $date->format('Y-m-d H:i:s');
 
-        $sql = "INSERT INTO url_checks (url_id, created_at) VALUES (:url_id, :created_at)";
+        $sql = "INSERT INTO url_checks (url_id, created_at, status_code) VALUES (:url_id, :created_at, :status_code)";
         $stmt = $this->conn->prepare($sql);
-        $url_id = $check->getUrl_id();
-        $stmt->bindParam(':url_id', $url_id);
+        $stmt->bindParam(':url_id', $check->getUrl_id());
         $stmt->bindParam(':created_at', $dateFormated);
+        $stmt->bindParam(':status_code', $check->getStatusCode());
         $stmt->execute();
         $id = (int) $this->conn->lastInsertId();
         $check->setId($id);

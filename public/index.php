@@ -3,6 +3,7 @@
 use Slim\Factory\AppFactory;
 use Slim\Middleware\MethodOverrideMiddleware;
 use DI\Container;
+use Illuminate\Support\Collection;
 use Hexlet\Code\Url;
 use Hexlet\Code\UrlRepo;
 use Hexlet\Code\UrlValidator;
@@ -92,7 +93,6 @@ $app->post('/urls', function ($req, $res) use ($router) {
 $app->get('/urls', function ($req, $res) {
     $urlRepo = $this->get(UrlRepo::class);
     $urls = $urlRepo->getEntities();
-
     $params = ['urls' => $urls];
 
     return $this->get('renderer')->render($res, 'store.phtml', $params);
@@ -118,8 +118,18 @@ $app->get('/urls/{id}', function ($req, $res, $args) {
 $app->post('/urls/{url_id}/checks', function ($req, $res, $args) use ($router) {
     $url_id = $args['url_id'];
     $check = Check::fromArray([$url_id]);
-
     $checkRepo = $this->get(CheckRepo::class);
+    $urlRepo = $this->get(UrlRepo::class);
+    $url = $urlRepo->find($url_id);
+    $requestStatus = $check->check($url);
+
+    if (is_null($requestStatus)) {
+        $this->get('flash')->addMessage('error', 'Произошла ошибка при проверке, не удалось подключиться');
+
+        return $res->withRedirect($router->urlFor('urls.show', ['id' => $url_id]));
+    }
+    
+    $check->setStatusCode($requestStatus['statusCode']);
     $checkRepo->save($check);
     $this->get('flash')->addMessage('success', 'Страница успешно проверена');
 

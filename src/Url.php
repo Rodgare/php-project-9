@@ -7,6 +7,8 @@ class Url
     private ?int $id = null;
     private ?string $name = null;
     private ?string $created_at = null;
+    private ?int $lastCheckCode = null;
+    private ?string $lastCheckDate = null;
 
     public static function fromArray(array $urlData): Url
     {
@@ -44,6 +46,26 @@ class Url
     public function setName(string $name): void
     {  
         $this->name = $name;
+    }
+
+    public function getLastCheckCode(): ?int
+    {
+        return $this->lastCheckCode;
+    }
+
+    public function getLastCheckDate(): ?string
+    {
+        return $this->lastCheckDate;
+    }
+
+    public function setLastCheckCode(int $lastCheckCode): void
+    {
+        $this->lastCheckCode = $lastCheckCode;
+    }
+
+    public function setLastCheckDate(string $lastCheckDate): void
+    {
+        $this->lastCheckDate = $lastCheckDate;
     }
 
     public function exists(): bool

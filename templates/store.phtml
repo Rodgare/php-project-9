@@ -51,8 +51,8 @@
                     <?= htmlspecialchars($url->getName()) ?>
                   </a>
                 </td>
-                <td></td>
-                <td></td>
+                <td><?= htmlspecialchars($url->getLastCheckDate()) ?? ''?></td>
+                <td><?= htmlspecialchars($url->getLastCheckCode()) ?? ''?></td>
               </tr>
             <?php endforeach ?>
 
