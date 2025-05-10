@@ -48,11 +48,11 @@
                 <td><?= $url->getId() ?></td>
                 <td>
                   <a href="/urls/<?= $url->getId() ?>">
-                    <?= htmlspecialchars($url->getName()) ?>
+                    <?= htmlspecialchars($url->getName() ?? '') ?>
                   </a>
                 </td>
-                <td><?= htmlspecialchars($url->getLastCheckDate()) ?? ''?></td>
-                <td><?= htmlspecialchars($url->getLastCheckCode()) ?? ''?></td>
+                <td><?= htmlspecialchars($url->getLastCheckDate() ?? '')?></td>
+                <td><?= htmlspecialchars($url->getLastCheckCode() ?? '')?></td>
               </tr>
             <?php endforeach ?>
 
