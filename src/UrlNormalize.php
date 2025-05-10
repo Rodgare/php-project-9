@@ -7,7 +7,9 @@ class UrlNormalize
     public function normalize(string $name): string
     {
         $parsed = parse_url($name);
-        $result = "{$parsed['scheme']}://{$parsed['host']}";
+        $scheme = $parsed['scheme'] ?? '';
+        $host = $parsed['host'] ?? '';
+        $result = "{$scheme}://{$host}";
 
         if ($parsed === false) {
             return $name;
