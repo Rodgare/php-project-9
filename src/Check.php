@@ -27,10 +27,10 @@ class Check
 
     public function checkStatus(string $urlName): ?Check
     {
-        $client = new Client(['timeout' => 6]);
+        $client = new Client();
 
         try {
-            $response = $client->request('GET', $urlName);
+            $response = $client->request('GET', $urlName, ['connect_timeout' => 6]);
         } catch (GuzzleException $e) {
             return null;
         }
