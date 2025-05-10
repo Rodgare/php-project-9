@@ -4,6 +4,7 @@ namespace Hexlet\Code;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use DiDom\Document;
 
 class Check
 {
@@ -24,21 +25,36 @@ class Check
         return $check;
     }
 
-    public function check(Url $url): ?array
+    public function checkStatus(string $urlName): ?Check
     {
         $client = new Client();
-        $urlName = $url->getName();
-        
+
         try {
             $response = $client->request('GET', $urlName);
         } catch (GuzzleException $e) {
-
             return null;
         }
-
         $statusCode = $response->getStatusCode();
+        $this->setStatusCode($statusCode);
 
-        return ['statusCode' => $statusCode];
+        return $this;
+    }
+
+    public function parseHtml(string $urlName): ?Check
+    {
+        $document = new Document($urlName, true);
+
+        if ($document->has('h1')) {
+            $this->setH1($document->first('h1')->text());
+        }
+        if ($document->has('title')) {
+            $this->setTitle($document->first('title')->text());
+        }
+        if ($document->has('meta')) {
+            $this->setDescription(optional($document->first('meta[name=description]'))->getAttribute('content'));
+        }
+
+        return $this;
     }
 
     public function getId(): ?int
@@ -61,24 +77,54 @@ class Check
         return $this->created_at;
     }
 
+    public function getH1(): ?string
+    {
+        return $this->h1;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
     public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    public function setStatusCode($status_code): void
+    public function setStatusCode(?int $status_code): void
     {
         $this->status_code = $status_code;
     }
 
-    public function setCreated_at(string $created_at): void
+    public function setCreated_at(?string $created_at): void
     {
         $this->created_at = $created_at;
     }
 
-    public function setUrl_id(string $url_id): void
+    public function setUrl_id(?string $url_id): void
     {
         $this->url_id = $url_id;
+    }
+
+    public function setH1(?string $h1): void
+    {
+        $this->h1 = $h1;
+    }
+
+    public function setTitle(?string $title): void
+    {
+        $this->title = $title;
+    }
+
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
     }
 
     public function exists(): bool

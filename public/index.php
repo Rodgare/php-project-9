@@ -121,18 +121,18 @@ $app->post('/urls/{url_id}/checks', function ($req, $res, $args) use ($router) {
     $checkRepo = $this->get(CheckRepo::class);
     $urlRepo = $this->get(UrlRepo::class);
     $url = $urlRepo->find($url_id);
-    $requestStatus = $check->check($url);
-
-    if (is_null($requestStatus)) {
+    $checkWithRequestStatus = $check->checkStatus($url->getName());
+    
+    if (is_null($checkWithRequestStatus)) {
         $this->get('flash')->addMessage('error', 'Произошла ошибка при проверке, не удалось подключиться');
 
         return $res->withRedirect($router->urlFor('urls.show', ['id' => $url_id]));
     }
     
-    $check->setStatusCode($requestStatus['statusCode']);
-    $checkRepo->save($check);
+    $parsedCheck = $checkWithRequestStatus->parseHtml($url->getName());
+    $checkRepo->save($parsedCheck);
     $this->get('flash')->addMessage('success', 'Страница успешно проверена');
-
+    
     return $res->withRedirect($router->urlFor('urls.show', ['id' => $url_id]));
 });
 

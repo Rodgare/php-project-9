@@ -81,9 +81,9 @@
               <tr>
                 <td><?= $check->getId() ?></td>
                 <td><?= $check->getStatusCode() ?? ''?></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td><?= $check->getH1() ?? ''?></td>
+                <td><?= $check->getTitle() ?? ''?></td>
+                <td><?= $check->getDescription() ?? ''?></td>
                 <td><?= $check->getCreated_at() ?></td>
               </tr>
             <?php endforeach; ?>
