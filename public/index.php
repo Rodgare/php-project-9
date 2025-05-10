@@ -7,10 +7,12 @@ use Hexlet\Code\Url;
 use Hexlet\Code\UrlRepo;
 use Hexlet\Code\UrlValidator;
 use Hexlet\Code\UrlNormalize;
-
-session_start();
+use Hexlet\Code\Check;
+use Hexlet\Code\CheckRepo;
 
 require __DIR__ . '/../vendor/autoload.php';
+
+session_start();
 
 $container = new Container();
 $container->set('renderer', function () {
@@ -105,10 +107,23 @@ $app->get('/urls/{id}', function ($req, $res, $args) {
         return $this->get('renderer')->render($res->withStatus(404), '404.phtml');
     }
 
+    $checkRepo = $this->get(CheckRepo::class);
+    $checks = $checkRepo->findByUrl_id($id);
     $flash = $this->get('flash')->getMessages();
-    $params = ['url' => $url, 'flash' => $flash];
+    $params = ['url' => $url, 'flash' => $flash, 'checks' => $checks];
 
     return $this->get('renderer')->render($res, 'show.phtml', $params);
 })->setName('urls.show');
+
+$app->post('/urls/{url_id}/checks', function ($req, $res, $args) use ($router) {
+    $url_id = $args['url_id'];
+    $check = Check::fromArray([$url_id]);
+
+    $checkRepo = $this->get(CheckRepo::class);
+    $checkRepo->save($check);
+    $this->get('flash')->addMessage('success', 'Страница успешно проверена');
+
+    return $res->withRedirect($router->urlFor('urls.show', ['id' => $url_id]));
+});
 
 $app->run();
