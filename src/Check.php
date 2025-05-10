@@ -27,7 +27,7 @@ class Check
 
     public function checkStatus(string $urlName): ?Check
     {
-        $client = new Client();
+        $client = new Client(['timeout' => 6]);
 
         try {
             $response = $client->request('GET', $urlName);
