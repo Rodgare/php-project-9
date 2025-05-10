@@ -55,7 +55,7 @@
             </tr>
             <tr>
               <td>Дата создания</td>
-              <td><?= htmlspecialchars($url->getCreated_at()) ?></td>
+              <td><?= htmlspecialchars($url->getCreatedAt()) ?></td>
             </tr>
           </tbody>
         </table>
@@ -84,7 +84,7 @@
                 <td><?= $check->getH1() ?? ''?></td>
                 <td><?= $check->getTitle() ?? ''?></td>
                 <td><?= $check->getDescription() ?? ''?></td>
-                <td><?= $check->getCreated_at() ?></td>
+                <td><?= $check->getCreatedAt() ?></td>
               </tr>
             <?php endforeach; ?>
           <?php endif; ?>

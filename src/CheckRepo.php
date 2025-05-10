@@ -4,7 +4,7 @@ namespace Hexlet\Code;
 
 use Carbon\Carbon;
 
-class checkRepo
+class CheckRepo
 {
     private \PDO $conn;
 
@@ -28,17 +28,17 @@ class checkRepo
         return $checks;
     }
 
-    public function findByUrl_id(int $url_id): array
+    public function findByUrlId(int $urlId): array
     {
         $checks = [];
         $sql = "SELECT * FROM url_checks WHERE url_id = ? ORDER BY id DESC";
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute([$url_id]);
+        $stmt->execute([$urlId]);
 
         while ($row = $stmt->fetch()) {
             $check = Check::fromArray([$row['url_id']]);
             $check->setId($row['id']);
-            $check->setCreated_at($row['created_at']);
+            $check->setCreatedAt($row['created_at']);
             $check->setStatusCode($row['status_code']);
             $check->setH1($row['h1']);
             $check->setTitle($row['title']);
@@ -54,9 +54,10 @@ class checkRepo
         $date = Carbon::now();
         $dateFormated = $date->format('Y-m-d H:i:s');
 
-        $sql = "INSERT INTO url_checks (url_id, created_at, status_code, h1, title, description) VALUES (:url_id, :created_at, :status_code, :h1, :title, :description)";
+        $sql = "INSERT INTO url_checks (url_id, created_at, status_code, h1, title, description)
+                    VALUES (:url_id, :created_at, :status_code, :h1, :title, :description)";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(':url_id', $check->getUrl_id());
+        $stmt->bindParam(':url_id', $check->getUrlId());
         $stmt->bindParam(':created_at', $dateFormated);
         $stmt->bindParam(':status_code', $check->getStatusCode());
         $stmt->bindParam(':h1', $check->getH1());

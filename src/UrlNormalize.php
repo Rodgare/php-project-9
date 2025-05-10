@@ -12,7 +12,7 @@ class UrlNormalize
         if ($parsed === false) {
             return $name;
         }
-        
+
         return $result;
     }
 }

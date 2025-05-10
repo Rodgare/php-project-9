@@ -37,7 +37,7 @@ class UrlRepo
         $stmt = $this->conn->query($sql);
         while ($row = $stmt->fetch()) {
             $url = Url::fromArray([$row['url_name']]);
-            $url->setCreated_at($row['url_created_at']);
+            $url->setCreatedAt($row['url_created_at']);
             if ($row['check_created_at']) {
                 $url->setLastCheckDate($row['check_created_at']);
             }
@@ -56,17 +56,18 @@ class UrlRepo
         $sql = "SELECT * FROM urls WHERE id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([$id]);
-        if ($row = $stmt->fetch())  {
+        if ($row = $stmt->fetch()) {
             $url = Url::fromArray([$row['name']]);
             $url->setId($row['id']);
-            $url->setCreated_at($row['created_at']);
+            $url->setCreatedAt($row['created_at']);
             return $url;
         }
 
         return null;
     }
 
-    public function save(Url $url): void {
+    public function save(Url $url): void
+    {
         if ($url->exists()) {
             $this->update($url);
         } else {
@@ -109,11 +110,11 @@ class UrlRepo
         $stmt->execute();
         $urls = $stmt->fetch();
 
-        if($urls) {
+        if ($urls) {
             $url->setId($urls['id']);
             return true;
         }
-        
+
         return false;
     }
 }

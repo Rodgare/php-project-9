@@ -9,8 +9,8 @@ use DiDom\Document;
 class Check
 {
     private ?int $id = null;
-    private ?int $url_id = null;
-    private ?string $created_at = null;
+    private ?int $urlId = null;
+    private ?string $createdAt = null;
     private ?string $status_code = null;
     private ?string $h1 = null;
     private ?string $title = null;
@@ -18,9 +18,9 @@ class Check
 
     public static function fromArray(array $checkData): Check
     {
-        [$url_id] = $checkData;
+        [$urlId] = $checkData;
         $check = new Check();
-        $check->setUrl_id($url_id);
+        $check->setUrlId($urlId);
 
         return $check;
     }
@@ -62,9 +62,9 @@ class Check
         return $this->id;
     }
 
-    public function getUrl_id(): ?string
+    public function getUrlid(): ?string
     {
-        return $this->url_id;
+        return $this->urlId;
     }
 
     public function getStatusCode(): ?string
@@ -72,9 +72,9 @@ class Check
         return $this->status_code;
     }
 
-    public function getCreated_at(): ?string
+    public function getCreatedAt(): ?string
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     public function getH1(): ?string
@@ -102,14 +102,14 @@ class Check
         $this->status_code = $status_code;
     }
 
-    public function setCreated_at(?string $created_at): void
+    public function setCreatedAt(?string $createdAt): void
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
     }
 
-    public function setUrl_id(?string $url_id): void
+    public function setUrlId(?string $urlId): void
     {
-        $this->url_id = $url_id;
+        $this->urlId = $urlId;
     }
 
     public function setH1(?string $h1): void

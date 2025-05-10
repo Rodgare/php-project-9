@@ -6,7 +6,7 @@ class Url
 {
     private ?int $id = null;
     private ?string $name = null;
-    private ?string $created_at = null;
+    private ?string $createdAt = null;
     private ?int $lastCheckCode = null;
     private ?string $lastCheckDate = null;
 
@@ -28,9 +28,9 @@ class Url
         return $this->name;
     }
 
-    public function getCreated_at(): ?string
+    public function getCreatedAt(): ?string
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     public function setId(int $id): void
@@ -38,13 +38,13 @@ class Url
         $this->id = $id;
     }
 
-    public function setCreated_at(string $created_at): void
+    public function setCreatedAt(string $createdAt): void
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
     }
 
     public function setName(string $name): void
-    {  
+    {
         $this->name = $name;
     }
 
