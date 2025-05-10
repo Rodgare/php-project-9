@@ -57,12 +57,17 @@ class CheckRepo
         $sql = "INSERT INTO url_checks (url_id, created_at, status_code, h1, title, description)
                     VALUES (:url_id, :created_at, :status_code, :h1, :title, :description)";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(':url_id', $check->getUrlId());
+        $urlId = $check->getUrlId();
+        $stmt->bindParam(':url_id', $urlId);
         $stmt->bindParam(':created_at', $dateFormated);
-        $stmt->bindParam(':status_code', $check->getStatusCode());
-        $stmt->bindParam(':h1', $check->getH1());
-        $stmt->bindParam(':title', $check->getTitle());
-        $stmt->bindParam(':description', $check->getDescription());
+        $statusCode = $check->getStatusCode();
+        $stmt->bindParam(':status_code', $statusCode);
+        $h1 = $check->getH1();
+        $stmt->bindParam(':h1', $h1);
+        $title = $check->getTitle();
+        $stmt->bindParam(':title', $title);
+        $description = $check->getDescription();
+        $stmt->bindParam(':description', $description);
         $stmt->execute();
         $id = (int) $this->conn->lastInsertId();
         $check->setId($id);
