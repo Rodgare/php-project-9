@@ -35,17 +35,19 @@ class UrlRepo
                     u.id;
                 ";
         $stmt = $this->conn->query($sql);
-        while ($row = $stmt->fetch()) {
-            $url = Url::fromArray([$row['url_name']]);
-            $url->setCreatedAt($row['url_created_at']);
-            if ($row['check_created_at']) {
-                $url->setLastCheckDate($row['check_created_at']);
+        if ($stmt) {
+            while ($row = $stmt->fetch()) {
+                $url = Url::fromArray([$row['url_name']]);
+                $url->setCreatedAt($row['url_created_at']);
+                if ($row['check_created_at']) {
+                    $url->setLastCheckDate($row['check_created_at']);
+                }
+                if ($row['status_code']) {
+                    $url->setLastCheckCode($row['status_code']);
+                }
+                $url->setId($row['url_id']);
+                $urls[] = $url;
             }
-            if ($row['status_code']) {
-                $url->setLastCheckCode($row['status_code']);
-            }
-            $url->setId($row['url_id']);
-            $urls[] = $url;
         }
 
         return $urls;

@@ -35,7 +35,7 @@ $container->set(
         $databaseUrl = parse_url($_ENV['DATABASE_URL']);
 
         $host = $databaseUrl['host'];
-        $port = $databaseUrl['port'];
+        $port = $databaseUrl['port'] ?? '5432';
         $dbname = ltrim($databaseUrl['path'], '/');
         $user = $databaseUrl['user'];
         $password = $databaseUrl['pass'];
@@ -90,14 +90,14 @@ $app->post(
                 $id = $url->getId();
                 $this->get('flash')->addMessage('success', 'Страница уже существует');
 
-                return $res->withRedirect($router->urlFor('urls.show', ['id' => $id]));
+                return $res->withRedirect($router->urlFor('urls.show', ['id' => "$id"]));
             }
 
             $urlRepo->save($url);
             $id = $url->getId();
             $this->get('flash')->addMessage('success', 'Страница успешно добавлена');
 
-            return $res->withRedirect($router->urlFor('urls.show', ['id' => $id]));
+            return $res->withRedirect($router->urlFor('urls.show', ['id' => "$id"]));
         }
 
         $params = [

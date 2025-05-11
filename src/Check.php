@@ -46,14 +46,14 @@ class Check
 
         if ($document->has('h1')) {
             $doc = $document->first('h1');
-            if ($doc instanceof \DiDom\Element && !is_null($doc)) {
+            if ($doc instanceof \DiDom\Element) {
                 $h1 = trim($doc->text());
                 $this->setH1($h1);
             }
         }
         if ($document->has('title')) {
             $doc = $document->first('title');
-            if ($doc instanceof \DiDom\Element && !is_null($doc)) {
+            if ($doc instanceof \DiDom\Element) {
                 $title = trim($doc->text());
                 $this->setTitle($title);
             }

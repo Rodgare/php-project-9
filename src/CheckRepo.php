@@ -18,11 +18,12 @@ class CheckRepo
         $checks = [];
         $sql = "SELECT * FROM url_checks";
         $stmt = $this->conn->query($sql);
-
-        while ($row = $stmt->fetch()) {
-            $check = Check::fromArray([$row['url_id'], $row['created_at']]);
-            $check->setId($row['id']);
-            $checks[] = $check;
+        if ($stmt) {
+            while ($row = $stmt->fetch()) {
+                $check = Check::fromArray([$row['url_id'], $row['created_at']]);
+                $check->setId($row['id']);
+                $checks[] = $check;
+            }
         }
 
         return $checks;
