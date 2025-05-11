@@ -12,9 +12,9 @@ class UrlNormalize
         $result = "{$scheme}://{$host}";
 
         if ($parsed === false) {
-            return $name;
+            return strtolower($name);
         }
 
-        return $result;
+        return strtolower($result);
     }
 }
