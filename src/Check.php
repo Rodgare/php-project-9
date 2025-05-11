@@ -11,7 +11,7 @@ class Check
     private ?int $id = null;
     private ?int $urlId = null;
     private ?string $createdAt = null;
-    private ?string $status_code = null;
+    private ?int $status_code = null;
     private ?string $h1 = null;
     private ?string $title = null;
     private ?string $description = null;
@@ -45,10 +45,18 @@ class Check
         $document = new Document($urlName, true);
 
         if ($document->has('h1')) {
-            $this->setH1($document->first('h1')->text());
+            $doc = $document->first('h1');
+            if ($doc instanceof \DiDom\Element && !is_null($doc)) {
+                $h1 = trim($doc->text());
+                $this->setH1($h1);
+            }
         }
         if ($document->has('title')) {
-            $this->setTitle($document->first('title')->text());
+            $doc = $document->first('title');
+            if ($doc instanceof \DiDom\Element && !is_null($doc)) {
+                $title = trim($doc->text());
+                $this->setTitle($title);
+            }
         }
         if ($document->has('meta')) {
             $this->setDescription(optional($document->first('meta[name=description]'))->getAttribute('content'));
@@ -62,12 +70,12 @@ class Check
         return $this->id;
     }
 
-    public function getUrlid(): ?string
+    public function getUrlid(): ?int
     {
         return $this->urlId;
     }
 
-    public function getStatusCode(): ?string
+    public function getStatusCode(): ?int
     {
         return $this->status_code;
     }
@@ -107,7 +115,7 @@ class Check
         $this->createdAt = $createdAt;
     }
 
-    public function setUrlId(?string $urlId): void
+    public function setUrlId(?int $urlId): void
     {
         $this->urlId = $urlId;
     }

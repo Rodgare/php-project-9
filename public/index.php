@@ -33,15 +33,12 @@ $container->set(
     \PDO::class,
     function () {
         $databaseUrl = parse_url($_ENV['DATABASE_URL']);
-        $host = $databaseUrl['host'] ?? $_ENV['DB_HOST'] ??
-        $_ENV['DATABASE_HOST'] ?? 'localhost';
-        $port = $databaseUrl['port'] ?? $_ENV['DB_PORT'] ?? $_ENV['DATABASE_PORT'] ?? '5432';
-        $dbname = ltrim($databaseUrl['path'], '/') ?? $_ENV['DB_DATABASE'] ??
-        $_ENV['DATABASE_NAME'] ?? 'project9';
-        $user = $databaseUrl['user'] ?? $_ENV['DB_USERNAME'] ??
-        $_ENV['DATABASE_USERNAME'] ?? $_ENV['DB_USER'] ?? 'axel';
-        $password = $databaseUrl['pass'] ?? $_ENV['DB_PASSWORD'] ??
-        $_ENV['DATABASE_PASSWORD'] ?? $_ENV['DB_PASS'] ?? '1234';
+
+        $host = $databaseUrl['host'];
+        $port = $databaseUrl['port'];
+        $dbname = ltrim($databaseUrl['path'], '/');
+        $user = $databaseUrl['user'];
+        $password = $databaseUrl['pass'];
         $conStr = sprintf(
             "pgsql:host=%s;port=%d;dbname=%s;user=%s;password=%s",
             $host,
@@ -59,7 +56,10 @@ $container->set(
 
 $initFilePath = implode('/', [dirname(__DIR__), 'database.sql']);
 $initSql = file_get_contents($initFilePath);
-$container->get(\PDO::class)->exec($initSql);
+if ($initSql) {
+    $container->get(\PDO::class)->exec($initSql);
+}
+
 
 $app = AppFactory::createFromContainer($container);
 $app->addErrorMiddleware(true, true, true);

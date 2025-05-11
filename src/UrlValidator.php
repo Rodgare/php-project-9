@@ -2,13 +2,9 @@
 
 namespace Hexlet\Code;
 
-use Valitron\Validator;
-
-use function PHPUnit\Framework\isNull;
-
 class UrlValidator
 {
-    public function validate($urlData): array
+    public function validate(array $urlData): array
     {
         $errors = [];
         $url = parse_url($urlData['name']);
