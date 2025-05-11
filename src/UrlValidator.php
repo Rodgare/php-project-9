@@ -18,7 +18,7 @@ class UrlValidator
         if (empty($urlData['name'])) {
             $errors[] = 'URL не должен быть пустым';
         }
-        
+
         if (empty($scheme) || empty($host)) {
             $errors[] = 'Некорректный URL';
         }
